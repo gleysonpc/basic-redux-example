@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch, useSelector } from 'react-redux'
+import { getUsers } from './redux/users/actions'
 
 function App() {
+  const dispatch = useDispatch()
+  const { list: users, loading } = useSelector(state => state.users)
+
+  function handleRequest() {
+    dispatch(getUsers())
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={handleRequest}>request</button>
+      {loading && <p> Carregando... </p>}
+      <ul>
+        {
+          users?.map(user => (
+            <li key={user.id} > {user.name} </li>
+          ))
+        }
+      </ul>
     </div>
   );
 }
